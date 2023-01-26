@@ -1,0 +1,74 @@
+type HectorPayFactory @entity {
+  id: ID!
+  count: Int!
+  address: Bytes!
+  contracts: [HectorPayContract!]! @derivedFrom(field: "factory")
+  createdTimestamp: BigInt!
+  createdBlock: BigInt!
+}
+
+type HectorPayContract @entity {
+  id: ID!
+  address: Bytes!
+  factory: HectorPayFactory!
+  token: Token!
+  streams: [Stream!]! @derivedFrom(field: "contract")
+  createdTimestamp: BigInt!
+  createdBlock: BigInt!
+}
+
+type Stream @entity {
+  id: ID!
+  streamId: Bytes!
+  contract: HectorPayContract!
+  users: [User!]!
+  payer: User!
+  payee: User!
+  token: Token!
+  amountPerSec: BigInt!
+  starts: BigInt!
+  ends: BigInt!
+  active: Boolean!
+  paused: Boolean!
+  lastPaused: BigInt!
+  pausedAmount: BigInt!
+  reason: String
+  historicalEvents: [HistoryEvent!]! @derivedFrom(field: "stream")
+  createdTimestamp: BigInt!
+  createdBlock: BigInt!
+}
+
+type User @entity {
+  id: ID!
+  address: Bytes!
+  balance: BigInt!
+  lastUpdate: BigInt!
+  streams: [Stream!]! @derivedFrom(field: "users")
+  historicalEvents: [HistoryEvent!]! @derivedFrom(field: "users")
+  createdTimestamp: BigInt!
+  createdBlock: BigInt!
+}
+
+type HistoryEvent @entity {
+  id: ID!
+  txHash: Bytes!
+  eventType: String!
+  users: [User!]!
+  token: Token!
+  stream: Stream
+  oldStream: Stream
+  amount: BigInt
+  createdTimestamp: BigInt!
+  createdBlock: BigInt!
+}
+
+type Token @entity {
+  id: ID!
+  address: Bytes!
+  symbol: String!
+  name: String!
+  decimals: Int!
+  contract: HectorPayContract!
+  createdTimestamp: BigInt!
+  createdBlock: BigInt!
+}
