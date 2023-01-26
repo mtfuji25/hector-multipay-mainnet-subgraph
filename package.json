@@ -1,0 +1,14 @@
+{
+  "name": "hector-multipay-mainnet-subgraph",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "auth": "graph auth --product hosted-service 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",
+    "deploy": "graph deploy --product hosted-service hector-network-devs/multipay"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.28.0",
+    "@graphprotocol/graph-ts": "0.26.0"
+  }
+}

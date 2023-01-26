@@ -1,0 +1,68 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: HectorPayFactory
+    network: fantom
+    source:
+      address: '0xcd9a7B6ff9728eDD78EdC7cf698fFef5D78bC0ce'
+      abi: HectorPayFactory
+      startBlock: 13589417
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - HectorPayFactory
+        - HectorPayContract
+      abis:
+        - name: HectorPayFactory
+          file: ./abis/HectorPayFactory.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: HectorPayCreated(address,address)
+          handler: onHectorPayCreated
+      file: ./src/mappings/HectorPayFactory.ts
+
+templates:
+  - kind: ethereum/contract
+    name: HectorPay
+    network: fantom
+    source:
+      abi: HectorPay
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - HectorPayFactory
+        - HectorPayContract
+      abis:
+        - name: HectorPay
+          file: ./abis/HectorPay.json
+        - name: HectorPayFactory
+          file: ./abis/HectorPayFactory.json
+      eventHandlers:
+        - event: StreamCreated(indexed address,indexed address,uint256,uint48,uint48,bytes32)
+          handler: onStreamCreated
+        - event: StreamCancelled(indexed address,indexed address,uint256,uint48,uint48,bytes32)
+          handler: onStreamCancelled
+        - event: StreamModified(indexed address,indexed address,uint256,uint48,bytes32,indexed address,uint256,uint48,uint48,bytes32)
+          handler: onStreamModified
+        - event: Withdraw(indexed address,indexed address,uint256,uint48,uint48,bytes32,uint256)
+          handler: onWithdraw
+        - event: PayerDeposit(indexed address,uint256)
+          handler: onPayerDeposit
+        - event: PayerWithdraw(indexed address,uint256)
+          handler: onPayerWithdraw
+        - event: StreamCreatedWithReason(indexed address,indexed address,uint256,uint48,uint48,bytes32,string)
+          handler: onStreamCreatedWithReason
+        - event: StreamPaused(indexed address,indexed address,uint256,uint48,uint48,bytes32)
+          handler: onStreamPaused
+        - event: StreamResumed(indexed address,indexed address,uint256,uint48,uint48,bytes32)
+          handler: onStreamResumed
+        - event: UpdatePayer(indexed address)
+          handler: onPayerUpdate
+      file: ./src/mappings/HectorPay.ts

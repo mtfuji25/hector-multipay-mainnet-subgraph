@@ -1,0 +1,730 @@
+[
+  { "inputs": [], "stateMutability": "nonpayable", "type": "constructor" },
+  { "inputs": [], "name": "ACTIVE_STREAM", "type": "error" },
+  { "inputs": [], "name": "INACTIVE_STREAM", "type": "error" },
+  { "inputs": [], "name": "INVALID_ADDRESS", "type": "error" },
+  { "inputs": [], "name": "INVALID_AMOUNT", "type": "error" },
+  { "inputs": [], "name": "INVALID_PARAM", "type": "error" },
+  { "inputs": [], "name": "INVALID_TIME", "type": "error" },
+  { "inputs": [], "name": "PAYER_IN_DEBT", "type": "error" },
+  { "inputs": [], "name": "STREAM_ENDED", "type": "error" },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "version",
+        "type": "uint8"
+      }
+    ],
+    "name": "Initialized",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "PayerDeposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "PayerWithdraw",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountPerSec",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "starts",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "ends",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "streamId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "StreamCancelled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountPerSec",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "starts",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "ends",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "streamId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "StreamCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountPerSec",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "starts",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "ends",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "streamId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "reason",
+        "type": "string"
+      }
+    ],
+    "name": "StreamCreatedWithReason",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "oldTo",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oldAmountPerSec",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "oldEnds",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "oldStreamId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountPerSec",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "starts",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "ends",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "newStreamId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "StreamModified",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountPerSec",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "starts",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "ends",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "streamId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "StreamPaused",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountPerSec",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "starts",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "ends",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "streamId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "StreamResumed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "payer",
+        "type": "address"
+      }
+    ],
+    "name": "UpdatePayer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "streamId",
+        "type": "bytes32"
+      }
+    ],
+    "name": "UpdateStream",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountPerSec",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "starts",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint48",
+        "name": "ends",
+        "type": "uint48"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "streamId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Withdraw",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "DECIMALS_DIVISOR",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes[]", "name": "calls", "type": "bytes[]" },
+      { "internalType": "bool", "name": "revertOnFail", "type": "bool" }
+    ],
+    "name": "batch",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountPerSec", "type": "uint256" },
+      { "internalType": "uint48", "name": "starts", "type": "uint48" },
+      { "internalType": "uint48", "name": "ends", "type": "uint48" }
+    ],
+    "name": "cancelStream",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountPerSec", "type": "uint256" },
+      { "internalType": "uint48", "name": "starts", "type": "uint48" },
+      { "internalType": "uint48", "name": "ends", "type": "uint48" }
+    ],
+    "name": "createStream",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountPerSec", "type": "uint256" },
+      { "internalType": "uint48", "name": "starts", "type": "uint48" },
+      { "internalType": "uint48", "name": "ends", "type": "uint48" },
+      { "internalType": "string", "name": "reason", "type": "string" }
+    ],
+    "name": "createStreamWithReason",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "name": "debts",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "deposit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amountToDeposit",
+        "type": "uint256"
+      },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountPerSec", "type": "uint256" },
+      { "internalType": "uint48", "name": "starts", "type": "uint48" },
+      { "internalType": "uint48", "name": "ends", "type": "uint48" }
+    ],
+    "name": "depositAndCreate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amountToDeposit",
+        "type": "uint256"
+      },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountPerSec", "type": "uint256" },
+      { "internalType": "uint48", "name": "starts", "type": "uint48" },
+      { "internalType": "uint48", "name": "ends", "type": "uint48" },
+      { "internalType": "string", "name": "reason", "type": "string" }
+    ],
+    "name": "depositAndCreateWithReason",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountPerSec", "type": "uint256" },
+      { "internalType": "uint48", "name": "starts", "type": "uint48" },
+      { "internalType": "uint48", "name": "ends", "type": "uint48" }
+    ],
+    "name": "getStreamId",
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address[]", "name": "to", "type": "address[]" },
+      {
+        "internalType": "uint256[]",
+        "name": "amountPerSec",
+        "type": "uint256[]"
+      },
+      { "internalType": "uint48[]", "name": "starts", "type": "uint48[]" },
+      { "internalType": "uint48[]", "name": "ends", "type": "uint48[]" },
+      { "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "isSufficientFund",
+    "outputs": [
+      { "internalType": "bool", "name": "isSufficient", "type": "bool" },
+      { "internalType": "uint256", "name": "chargeAmount", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "oldTo", "type": "address" },
+      {
+        "internalType": "uint256",
+        "name": "oldAmountPerSec",
+        "type": "uint256"
+      },
+      { "internalType": "uint48", "name": "starts", "type": "uint48" },
+      { "internalType": "uint48", "name": "oldEnds", "type": "uint48" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountPerSec", "type": "uint256" },
+      { "internalType": "uint48", "name": "ends", "type": "uint48" }
+    ],
+    "name": "modifyStream",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountPerSec", "type": "uint256" },
+      { "internalType": "uint48", "name": "starts", "type": "uint48" },
+      { "internalType": "uint48", "name": "ends", "type": "uint48" }
+    ],
+    "name": "pauseStream",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "payers",
+    "outputs": [
+      { "internalType": "uint256", "name": "balance", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "totalPaidPerSec",
+        "type": "uint256"
+      },
+      { "internalType": "uint48", "name": "lastUpdate", "type": "uint48" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IERC20Permit",
+        "name": "token",
+        "type": "address"
+      },
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "uint256", "name": "deadline", "type": "uint256" },
+      { "internalType": "uint8", "name": "v", "type": "uint8" },
+      { "internalType": "bytes32", "name": "r", "type": "bytes32" },
+      { "internalType": "bytes32", "name": "s", "type": "bytes32" }
+    ],
+    "name": "permitToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "name": "redeemables",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountPerSec", "type": "uint256" },
+      { "internalType": "uint48", "name": "starts", "type": "uint48" },
+      { "internalType": "uint48", "name": "ends", "type": "uint48" }
+    ],
+    "name": "resumeStream",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "name": "streams",
+    "outputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountPerSec", "type": "uint256" },
+      { "internalType": "uint48", "name": "starts", "type": "uint48" },
+      { "internalType": "uint48", "name": "ends", "type": "uint48" },
+      { "internalType": "uint48", "name": "lastPaid", "type": "uint48" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "token",
+    "outputs": [
+      { "internalType": "contract IERC20", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountPerSec", "type": "uint256" },
+      { "internalType": "uint48", "name": "starts", "type": "uint48" },
+      { "internalType": "uint48", "name": "ends", "type": "uint48" }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+    ],
+    "name": "withdrawPayer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "withdrawPayerAll",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "from", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "amountPerSec", "type": "uint256" },
+      { "internalType": "uint48", "name": "starts", "type": "uint48" },
+      { "internalType": "uint48", "name": "ends", "type": "uint48" }
+    ],
+    "name": "withdrawable",
+    "outputs": [
+      { "internalType": "bytes32", "name": "streamId", "type": "bytes32" },
+      { "internalType": "uint256", "name": "lastUpdate", "type": "uint256" },
+      { "internalType": "uint256", "name": "debt", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "withdrawableAmount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
